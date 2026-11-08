@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>LAN Screen</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>LAN SCREEN</h1>
+
+      <p id="status">Connecting...</p>
+
+      <div id="hostControls">
+        <button id="shareScreen">SHARE SCREEN</button>
+      </div>
+
+      <div id="screenContainer">
+        <video id="screen" autoplay playsinline controls></video>
+      </div>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+
+      const role = params.get("role");
+
+      if (role === "host") {
+        const script = document.createElement("script");
+
+        script.src = "host.js";
+
+        document.body.appendChild(script);
+      } else {
+        const script = document.createElement("script");
+
+        script.src = "client.js";
+
+        document.body.appendChild(script);
+      }
+    </script>
+  </body>
+</html>

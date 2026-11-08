@@ -1,0 +1,19 @@
+{
+    "name": "lanbeam",
+    "version": "1.0.0",
+    "description": "LAN PC screen streaming to iPad using WebRTC",
+    "license": "MIT",
+    "type": "module",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "nodemon server.js"
+    },
+    "dependencies": {
+        "express": "^5.2.1",
+        "ws": "^8.21.3"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.14"
+    }
+}
