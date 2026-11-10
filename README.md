@@ -32,10 +32,10 @@ The server coordinates the connection, while WebRTC handles the media stream.
 
 ## Requirements
 
-- Node.js 24 or newer (Node.js 24 is used by the Docker image)
+- Node.js 24 or newer (for native installation)
 - A host and client connected to the same local network
 - A modern browser with screen-capture and WebRTC support
-- Docker Desktop (optional)
+- Docker Desktop (optional, for containerized deployment)
 
 ## Installation
 
@@ -95,17 +95,51 @@ If the client cannot connect, check the host firewall and ensure both devices ca
 
 ## Docker Setup
 
-Build the Docker image:
+LANBeam includes a Dockerfile for containerized deployment.
+
+### Build the image
+
+From the project root directory, run:
 
 ```bash
 docker build -t lanbeam .
 ```
 
-Run the container:
+This creates a local Docker image named `lanbeam`.
+
+### Run the container
 
 ```bash
 docker run --rm -p 3000:3000 lanbeam
 ```
+
+The application will be accessible through port `3000` on the host computer.
+
+### Run in the background
+
+Alternatively, start the container in detached mode:
+
+```bash
+docker run -d --name lanbeam -p 3000:3000 lanbeam
+```
+
+### Stop the container
+
+If running in the foreground, press `Ctrl + C`.
+
+If running in detached mode:
+
+```bash
+docker stop lanbeam
+```
+
+To remove the stopped container:
+
+```bash
+docker rm lanbeam
+```
+
+### Access LANBeam
 
 Open the host interface:
 
@@ -113,21 +147,32 @@ Open the host interface:
 http://localhost:3000/?role=host
 ```
 
-On the client, use the host computer's LAN IP address:
+On the receiving device, use the host computer's LAN IP:
 
 ```text
 http://HOST_LAN_IP:3000/?role=client
 ```
 
-For example:
+Example:
 
 ```text
 http://192.168.1.10:3000/?role=client
 ```
 
-**Important:** Use the Windows host's LAN IP, not the internal IP address of the Docker container.
+**Important Docker networking note:**
+
+- Use the Windows host's LAN IPv4 address when connecting from another device.
+- Do not use the Docker container's internal `172.x.x.x` address.
+- Docker forwards host port `3000` to container port `3000`.
+- The application server must listen on `0.0.0.0` inside the container to accept forwarded connections.
 
 Docker runs the application server and signaling service. Screen capture still takes place in the host browser.
+
+### Docker image publishing
+
+The Docker image is currently built locally. Anyone cloning the repository can build their own image using the instructions above.
+
+Publishing a prebuilt image to GitHub Container Registry (GHCR) can be added in a future release.
 
 ## Limitations
 
